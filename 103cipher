@@ -19,10 +19,18 @@ def print_message(matrice):
     print("")
 
 
+def transform_zero(matrice):
+    for i in range(3):
+        for j in range(3):
+            if (matrice[i][j] > -0.0004 and matrice[i][j] < 0.004):
+                matrice[i][j] = 0.0
+    return matrice
+
 def print_matrice_float(matrice):
+    matrice = transform_zero(matrice)
     for i in range(len(matrice)):
         for j in range(len(matrice[0])):
-            print("{:<7.2f}".format(matrice[i][j]), end='')
+            print("{:<7.3f}".format(matrice[i][j]), end='')
         print("")
     print("")
 
@@ -86,35 +94,39 @@ def crypt_message(argv):
     print("Encrypted message:")
     print_message(encoded_matrice)
 
-def pipi_caca(matrice_clé):
-    a = matrice_clé[0][0]
-    b = matrice_clé[0][1]
-    c = matrice_clé[0][2]
-    d = matrice_clé[1][0]
-    e = matrice_clé[1][1]
-    f = matrice_clé[1][2]
-    g = matrice_clé[2][0]
-    h = matrice_clé[2][1]
-    i = matrice_clé[2][2]
-    det = a * (e*i - f*h)-b*(d*i-f*g)+c * (d*h-e*g)
+def determinant(mat):
+    det = mat[0][0] * (mat[1][1] * mat[2][2] - mat[2][1] * mat[1][2]) - \
+          mat[0][1] * (mat[1][0] * mat[2][2] - mat[2][0] * mat[1][2]) + \
+          mat[0][2] * (mat[1][0] * mat[2][1] - mat[2][0] * mat[1][1])
+    return det
+
+def determinant_2x2(mat):
+    if len(mat) != 2 or len(mat[0]) != 2 or len(mat[1]) != 2:
+        sys.exit(84)
+    a, b = mat[0]
+    c, d = mat[1]
+    det = a * d - b * c
+    return det
+
+def cofactor(mat):
+    cofactors = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    for i in range(3):
+        for j in range(3):
+            minor_matrix = [row[:j] + row[j+1:] for row in (mat[:i] + mat[i+1:])]
+            cofactors[i][j] = ((-1) ** (i + j)) * determinant_2x2(minor_matrix)
+    return cofactors
+
+def transpose(mat):
+    return [[mat[j][i] for j in range(3)] for i in range(3)]
+
+def pipi_caca(mat):
+    det = determinant(mat)
     if det == 0:
         sys.exit(84)
-    cofactor = [
-        [e * i - f * h, -(d * i - f * g), d * h - e * g],
-        [-(b * i - c * h), a * i - c * g, -(a * h - b * g)],
-        [b * f - c * e, -(a * f - c * d), a * e - b * d]
-    ]
-    print("iciii", cofactor[0][0], det, cofactor[0][0] / det)
-    print("iciii", cofactor[0][1], det, cofactor[0][1] / det)
-    print("iciii", cofactor[0][2], det, cofactor[0][2] / det)
-    inverse_matrix = [
-        [cofactor[0][0] / det, cofactor[0][1] / det, cofactor[0][2] / det],
-        [cofactor[1][0] / det, cofactor[1][1] / det, cofactor[1][2] / det],
-        [cofactor[2][0] / det, cofactor[2][1] / det, cofactor[2][2] / det]
-    ]
-
-    print_matrice_float(inverse_matrix)
-    return inverse_matrix
+    cofactors = cofactor(mat)
+    adjugate = transpose(cofactors)
+    inverse_mat = [[adjugate[i][j] / det for j in range(3)] for i in range(3)]
+    return inverse_mat
 
 def inverse_matrice_2x2(matrice_clé, det):
     a = matrice_clé[1][1] / det

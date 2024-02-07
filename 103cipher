@@ -18,6 +18,14 @@ def print_message(matrice):
             print(matrice[i][j], end=" ")
     print("")
 
+
+def print_matrice_float(matrice):
+    for i in range(len(matrice)):
+        for j in range(len(matrice[0])):
+            print("{:<7.2f}".format(matrice[i][j]), end='')
+        print("")
+    print("")
+
 def multiply_matrices(matrice1, matrice2):
     resultat = [[0 for _ in range(len(matrice2[0]))] for _ in range(len(matrice1))]
     for i in range(len(matrice1)):

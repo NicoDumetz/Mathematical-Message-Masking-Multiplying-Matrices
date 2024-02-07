@@ -13,9 +13,15 @@ def print_h():
     return 0
 
 def print_message(matrice):
-    for i in range(len(matrice)):
+    if (len(matrice) == 0):
+        print()
+        return
+    for i in range(len(matrice) - 1):
         for j in range(len(matrice[0])):
-            print(matrice[i][j], end=" ")
+            print(matrice[i][j], end= ' ')
+    for j in range(len(matrice[0]) - 1):
+        print(matrice[len(matrice) - 1][j], end= ' ')
+    print(matrice[len(matrice) - 1][len(matrice[0]) - 1], end= '')
     print("")
 
 

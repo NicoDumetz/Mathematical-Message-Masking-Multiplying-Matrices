@@ -144,7 +144,7 @@ def inverse_matrice(matrice_clé):
     if taille_mat == 2:
         det = (matrice_clé[0][0] * matrice_clé[1][1]) - (matrice_clé[0][1] * matrice_clé[1][0])
         if det == 0:
-            sys.exit(84);
+            sys.exit(84)
         return inverse_matrice_2x2(matrice_clé, det)
     if taille_mat == 3:
         return pipi_caca(matrice_clé)
@@ -170,8 +170,8 @@ def get_crypted_matrice_message(long, message):
 
 def decrypt_message(argv):
     matrice_clé = set_matrice(argv[1])
-    print_matrice(matrice_clé)
     matrice_clé = inverse_matrice(matrice_clé)
+    print("Key matrix:")
     print_matrice_float(matrice_clé)
     long = len(matrice_clé)
     crypted_matrice = get_crypted_matrice_message(long, argv[0])
@@ -180,6 +180,7 @@ def decrypt_message(argv):
     for i in range(len(decrypted_matrice)):
         for j in range(len(decrypted_matrice[i])):
             message += chr(int(decrypted_matrice[i][j]))
+    print("Decrypted message:")
     print(message)
 
 def main(argv):

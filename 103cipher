@@ -187,10 +187,10 @@ def decrypt_message(argv):
     print(message)
 
 def main(argv):
-    if (len(argv) != 3):
-        sys.exit(84)
     if (argv[0] == "-h"):
         return print_h()
+    if (len(argv) != 3):
+        sys.exit(84)
     if (argv[2] == "0"):
         return crypt_message(argv)
     if (argv[2] == "1"):

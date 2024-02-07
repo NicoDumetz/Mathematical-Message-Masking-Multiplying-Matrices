@@ -81,7 +81,7 @@ def crypt_message(argv):
 def main(argv):
     if (argv[0] == "-h"):
         return print_h()
-    if (argv[2] == 0)
+    if (argv[2] == "0"):
         return crypt_message(argv)
 
 if __name__ == "__main__":

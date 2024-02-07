@@ -1,26 +1,88 @@
 #!/usr/bin/env python3
 ##
 ## EPITECH PROJECT, 2023
-## 102 architect
+## 103 architect
 ## File description:
 ## 103 cypher
 ##
 import sys
-import math
+from math import *
 
 def print_h():
     print("USAGE\n    ./103cipher message key flag\n\nDESCRIPTION\n    message     a message, made of ASCII characters\n    key         the encryption key, made of ASCII characters\n    flag        0 for the message to be encrypted, 1 to be decrypted")
     return 0
 
-def print_matrice(matrice):
-    print("{:<7.2f}".format(matrice[0][0]),"{:<7.2f}".format(matrice[0][1]),"{:.2f}".format(matrice[0][2]))
-    print("{:<7.2f}".format(matrice[1][0]),"{:<7.2f}".format(matrice[1][1]),"{:.2f}".format(matrice[1][2]))
-    print("{:<7.2f}".format(matrice[2][0]),"{:<7.2f}".format(matrice[2][1]),"{:.2f}".format(matrice[2][2]))
+def print_message(matrice):
+    for i in range(len(matrice)):
+        for j in range(len(matrice[0])):
+            print(matrice[i][j], end=" ")
+    print("")
 
+def multiply_matrices(matrice1, matrice2):
+    resultat = [[0 for _ in range(len(matrice2[0]))] for _ in range(len(matrice1))]
+    for i in range(len(matrice1)):
+        for j in range(len(matrice2[0])):
+            for k in range(len(matrice2)):
+                resultat[i][j] += matrice1[i][k] * matrice2[k][j]
+    return resultat
+
+def print_matrice(matrice):
+    for i in range(len(matrice)):
+        for j in range(len(matrice[0])):
+            print("{:<7d}".format(matrice[i][j]), end='')
+        print("")
+    print("")
+
+def set_matrice(hash):
+    long = len(hash)
+    size = ceil(sqrt(long))
+    matrice = []
+    k = 0
+    for i in range(size):
+        tab = []
+        for j in range(size):
+            if k < long:
+                tab.append(ord(hash[k]))
+                k += 1
+            else:
+                tab.append(0)
+        matrice.append(tab)
+    return matrice
+
+def get_message_line(long, message):
+    line = []
+
+    for i in range(long):
+        line.append(0)
+    for i in range(long):
+        if len(message) == 0:
+            return line
+        line[i] = ord(message.pop(0))
+    return line
+
+def get_matrice_message(long, message):
+    matrice = []
+
+    message_li = list(message)
+    while(len(message_li) > 0):
+        matrice.append(get_message_line(long, message_li))
+    return matrice
+
+def crypt_message(argv):
+    matrice = set_matrice(argv[1])
+    long = len(matrice)
+    matrice_message = get_matrice_message(long, argv[0])
+    encoded_matrice = multiply_matrices(matrice_message, matrice)
+    print("Key matrix:")
+    print_matrice(matrice)
+    print("Encrypted message:")
+    print_message(encoded_matrice)
 
 def main(argv):
     if (argv[0] == "-h"):
         return print_h()
+    if (argv[2] == 0)
+        return crypt_message(argv)
 
 if __name__ == "__main__":
     try:

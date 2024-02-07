@@ -78,15 +78,98 @@ def crypt_message(argv):
     print("Encrypted message:")
     print_message(encoded_matrice)
 
+def pipi_caca(matrice_clé):
+    a = matrice_clé[0][0]
+    b = matrice_clé[0][1]
+    c = matrice_clé[0][2]
+    d = matrice_clé[1][0]
+    e = matrice_clé[1][1]
+    f = matrice_clé[1][2]
+    g = matrice_clé[2][0]
+    h = matrice_clé[2][1]
+    i = matrice_clé[2][2]
+    det = a * (e*i - f*h)-b*(d*i-f*g)+c * (d*h-e*g)
+    if det == 0:
+        sys.exit(84)
+    cofactor = [
+        [e * i - f * h, -(d * i - f * g), d * h - e * g],
+        [-(b * i - c * h), a * i - c * g, -(a * h - b * g)],
+        [b * f - c * e, -(a * f - c * d), a * e - b * d]
+    ]
+    print("iciii", cofactor[0][0], det, cofactor[0][0] / det)
+    print("iciii", cofactor[0][1], det, cofactor[0][1] / det)
+    print("iciii", cofactor[0][2], det, cofactor[0][2] / det)
+    inverse_matrix = [
+        [cofactor[0][0] / det, cofactor[0][1] / det, cofactor[0][2] / det],
+        [cofactor[1][0] / det, cofactor[1][1] / det, cofactor[1][2] / det],
+        [cofactor[2][0] / det, cofactor[2][1] / det, cofactor[2][2] / det]
+    ]
+
+    print_matrice_float(inverse_matrix)
+    return inverse_matrix
+
+def inverse_matrice_2x2(matrice_clé, det):
+    a = matrice_clé[1][1] / det
+    b = (-1 * matrice_clé[0][1]) / det
+    c = (-1 * matrice_clé[1][0]) / det
+    d = matrice_clé[0][0] / det
+    return [[a, b], [c, d]]
+
+def inverse_matrice(matrice_clé):
+    taille_mat = len(matrice_clé)
+    if taille_mat == 1:
+        if (matrice_clé[0][0] == 0):
+            sys.exit(84);
+        return [[1 / matrice_clé[0][0]]]
+    if taille_mat == 2:
+        det = (matrice_clé[0][0] * matrice_clé[1][1]) - (matrice_clé[0][1] * matrice_clé[1][0])
+        if det == 0:
+            sys.exit(84);
+        return inverse_matrice_2x2(matrice_clé, det)
+    if taille_mat == 3:
+        return pipi_caca(matrice_clé)
+    sys.exit(84)
+
+def get_crypted_message_line(long, message):
+    line = []
+
+    for i in range(long):
+        line.append(0)
+    for i in range(long):
+        if len(message) == 0:
+            return line
+        line[i] = int(message.pop(0))
+    return line
+
+def get_crypted_matrice_message(long, message):
+    matrice = []
+    message_li = message.split()
+    while(len(message_li) > 0):
+        matrice.append(get_crypted_message_line(long, message_li))
+    return matrice
+
+def decrypt_message(argv):
+    matrice_clé = set_matrice(argv[1])
+    print_matrice(matrice_clé)
+    matrice_clé = inverse_matrice(matrice_clé)
+    print_matrice_float(matrice_clé)
+    long = len(matrice_clé)
+    crypted_matrice = get_crypted_matrice_message(long, argv[0])
+    decrypted_matrice = multiply_matrices(crypted_matrice, matrice_clé)
+    message = ""
+    for i in range(len(decrypted_matrice)):
+        for j in range(len(decrypted_matrice[i])):
+            message += chr(int(decrypted_matrice[i][j]))
+    print(message)
+
 def main(argv):
     if (argv[0] == "-h"):
         return print_h()
     if (argv[2] == "0"):
         return crypt_message(argv)
+    if (argv[2] == "1"):
+        return decrypt_message(argv)
 
 if __name__ == "__main__":
-    try:
-        main(sys.argv[1:])
-    except:
-        sys.exit(84)
+    main(sys.argv[1:])
     sys.exit(0)

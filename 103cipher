@@ -20,9 +20,9 @@ def print_message(matrice):
 
 
 def transform_zero(matrice):
-    for i in range(3):
-        for j in range(3):
-            if (matrice[i][j] > -0.0004 and matrice[i][j] < 0.004):
+    for i in range(len(matrice)):
+        for j in range(len(matrice)):
+            if (matrice[i][j] > -0.0004 and matrice[i][j] < 0.0004):
                 matrice[i][j] = 0.0
     return matrice
 

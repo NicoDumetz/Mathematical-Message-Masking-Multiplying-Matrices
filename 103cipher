@@ -119,7 +119,7 @@ def cofactor(mat):
 def transpose(mat):
     return [[mat[j][i] for j in range(3)] for i in range(3)]
 
-def pipi_caca(mat):
+def hugo_decrypte(mat):
     det = determinant(mat)
     if det == 0:
         sys.exit(84)
@@ -147,7 +147,7 @@ def inverse_matrice(matrice_clé):
             sys.exit(84)
         return inverse_matrice_2x2(matrice_clé, det)
     if taille_mat == 3:
-        return pipi_caca(matrice_clé)
+        return hugo_decrypte(matrice_clé)
     sys.exit(84)
 
 def get_crypted_message_line(long, message):

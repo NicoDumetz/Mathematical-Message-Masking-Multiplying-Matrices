@@ -44,8 +44,9 @@ def multiply_matrices(matrice1, matrice2):
 
 def print_matrice(matrice):
     for i in range(len(matrice)):
-        for j in range(len(matrice[0])):
+        for j in range(len(matrice[0]) - 1):
             print("{:<8d}".format(matrice[i][j]), end='')
+        print("{:d}".format(matrice[i][len(matrice[0]) - 1]), end='')
         print("")
     print("")
 
